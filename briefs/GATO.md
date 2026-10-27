@@ -32,3 +32,18 @@ Disqualifiers:
 - Human condition not met: top-10 holders (A) and LP burn (B) are unresolved (DATA FAILED), so this stops at Risk per the human note
 
 Analysis complete. Awaiting approval before Risk starts.
+
+ANALYST – 2026-10-27 18:07 ET
+Order size tested: $50
+Price impact: entry 0.047% / exit 0.047% (constant-product on DEX Screener reserves for 5E3d…: 22,938,183 GATO / 1,051.909 SOL, liq $213,881; excludes fee)   Pool fee: UNKNOWN (PumpSwap fee is set in program global/fee config, not read)
+Top-10 (ex-LP): 17.03% of 986,917,137 supply (Helius getTokenLargestAccounts + owner resolution; excluded only the pool vault GH91CT… owned by pool 5E3d…, 2.32%; no incinerator/burn owner in top 20; no owner identified as a known exchange — labels UNKNOWN)  Largest wallet: 3.32% (5MVneCfDge5vtf4C7QZmczCJbBB8vfvDbMqvopvkBLJm, which is the pool's coin_creator field, i.e. creator-linked), 30-day behavior UNKNOWN
+Insider flags: largest holder = coin_creator wallet (3.32%); #2 and #3 holders each hold exactly 25,000,000 (2.53%) and their owners (2t5Hh…, 8gHMH…) have no SOL account; holders #9/#10 exactly 10,000,000 each — round-lot pattern, relationship UNKNOWN; 10 template X accounts posted identical "176.92x … private alpha TG" text Oct 27 (carried over, CONFIRMED)
+Priority checks: A holders — CONFIRMED via Helius; B LP — CONFIRMED via Helius; C bot attention — CONFIRMED template-driven (carried over)
+Contract: mint CONFIRMED revoked (null) / freeze CONFIRMED revoked (null) / LP per pair: PumpSwap 5E3d… LP mint HYCkjQGv… supply 0, no holders — LP CONFIRMED burned; Meteora DnmL7v… ($36) and 5mocgr… ($47) UNKNOWN / proxy CONFIRMED none (Token-2022 mint, metadata update authority null) / tax CONFIRMED none (no transferFee extension; only metadataPointer + tokenMetadata) / blacklist CONFIRMED none (freeze null, no transferHook)
+Narrative: GTA6-hype meme cat, no product claim; promoted by template-driven bot accounts
+Narrative vs. data: UNCLEAR
+Origin account track record: @GemChaserSOL — automated alert feed (25 alerts 3:11–6:00 PM ET Oct 27), "Burn Yes | Locked Yes" is a template field; past outcomes UNKNOWN
+Unknowns: (1) Pool fee % — reading PumpSwap global/fee config account would resolve; (2) whether any top holder is an exchange — a wallet-label source (e.g. Solscan/Arkham labels) would resolve; (3) largest wallet 30-day behavior and links between round-lot holders/creator — Helius transaction history (getSignaturesForAddress) authorization would resolve; (4) BloFin listing claim by @Emoney24_7 — BloFin official announcement would resolve; (5) whether the 10 template accounts share one operator — X account metadata/linkage beyond public posts would resolve; (6) @GemChaserSOL past call outcomes — historical alert archive would resolve
+Disqualifiers: none
+
+Analysis complete. Awaiting approval before Risk starts.

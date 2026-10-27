@@ -2,19 +2,21 @@
   "ticker": "GATO",
   "chain": "Solana",
   "contract": "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump",
-  "stage": "scout",
-  "status": "approved",
-  "next_stage": "analyst",
+  "stage": "analyst",
+  "status": "pending",
+  "next_stage": "risk",
   "dry_run": false,
   "submitted_at": "2026-10-27T17:21:44-04:00",
   "verdict": "pass-with-unknowns",
-  "summary": "GTA6CAT (GATO) is a pump.fun graduate on PumpSwap. Liquidity is $218k, the pair is about 63 days old, and vol/liq is 4.10x. Mint and freeze authority are revoked. Top-10 holders and LP burn are unconfirmed. Early X attention came from automated alert bots and Telegram-caller template posts, plus a paid DEX Screener boost.",
+  "summary": "Helius rerun: mint/freeze revoked, no tax/hook, PumpSwap LP mint supply 0 (burned). Top-10 ex-LP 17.03%, largest wallet 3.32% is the coin_creator. $50 impact ~0.047% each way. Bot-template promotion confirmed.",
   "disqualifiers": [],
   "unknowns": [
-    "top-10 holder % (Solana RPC 429)",
-    "LP burn/lock status not verified on-chain",
-    "@GemChaserSOL own paid-promo status",
-    "relation of pre-launch @gta6cat to @TheGTA6cat"
+    "Pool fee %",
+    "Exchange labels for top holders",
+    "Largest wallet 30-day behavior / creator-linked round-lot holders",
+    "BloFin listing claim",
+    "Template accounts common operator",
+    "@GemChaserSOL track record"
   ],
   "red_flags": [
     "early attention dominated by bots and TG-caller template posts",
@@ -28,7 +30,7 @@
   "decision": {
     "by": "human",
     "status": "approved",
-    "reason": "“Approve, send to analyst.”",
+    "reason": "\u201cApprove, send to analyst.\u201d",
     "at": "2026-10-27T22:01:49.740Z"
   }
 }
