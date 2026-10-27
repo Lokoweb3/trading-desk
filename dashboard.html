@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Desk Approvals</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one column of stage cards, summary before detail, decision controls at the bottom of each card. */
+:root {
+  --bg: #f3f4f2;
+  --panel: #ffffff;
+  --fg: #1b1f1e;
+  --muted: #5e6664;
+  --line: #d9ddda;
+  --accent: #1f6f78;
+  --good: #2e7d4f;
+  --warn: #b7791f;
+  --crit: #b23a3a;
+  --font-body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15191a; --panel: #1e2425; --fg: #e8ebe9; --muted: #9aa3a0; --line: #30383a;
+    --accent: #5fb7c0; --good: #5ec28a; --warn: #e0a84a; --crit: #e06b6b; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15191a; --panel: #1e2425; --fg: #e8ebe9; --muted: #9aa3a0; --line: #30383a;
+  --accent: #5fb7c0; --good: #5ec28a; --warn: #e0a84a; --crit: #e06b6b; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.45;
+  padding-block: 20px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 760px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+h1 { font-size: 20px; margin: 0; letter-spacing: -0.01em; }
+.sub { color: var(--muted); font-size: 13px; font-family: var(--font-mono); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button, input, textarea, select {
+  font: inherit; color: inherit; border-radius: 6px; border: 1px solid var(--line); background: var(--panel); padding: 8px 12px;
+}
+button { cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+button.good { background: var(--good); color: #fff; border-color: var(--good); }
+button.crit { background: var(--crit); color: #fff; border-color: var(--crit); }
+button:disabled { opacity: .5; cursor: default; }
+.setup { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: grid; gap: 10px; }
+.setup label { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.setup input { width: 100%; font-family: var(--font-mono); font-size: 13px; }
+.note { font-size: 13px; color: var(--muted); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.stat b { display: block; font-size: 22px; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.stat span { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 8px 0 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 10px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.card.zero { border-left-color: var(--crit); }
+.card.sized { border-left-color: var(--good); }
+.card.decided { border-left-color: var(--line); opacity: .85; }
+.card-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; align-items: baseline; }
+.ticker { font-family: var(--font-mono); font-weight: 600; font-size: 18px; }
+.ticker small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px; }
+.pill { display: inline-block; font-family: var(--font-mono); font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.pill.stage { border-color: var(--accent); color: var(--accent); }
+.pill.dry { border-color: var(--warn); color: var(--warn); }
+.pill.zero { border-color: var(--crit); color: var(--crit); }
+.pill.sized { border-color: var(--good); color: var(--good); }
+.summary { margin: 0; }
+.lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.list h3 { font-size: 12px; margin: 0 0 4px; text-transform: uppercase; letter-spacing: .06em; }
+.list.crit h3 { color: var(--crit); } .list.warn h3 { color: var(--warn); } .list.flag h3 { color: var(--muted); }
+.list ul { margin: 0; padding-left: 18px; font-size: 14px; }
+.list .none { color: var(--muted); font-size: 13px; }
+.kv { font-family: var(--font-mono); font-size: 12px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 16px; }
+.kv a { color: var(--accent); }
+.decide { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 12px; }
+.decide textarea { width: 100%; min-height: 60px; resize: vertical; }
+.decide .row { justify-content: space-between; }
+.prev { font-size: 13px; border-top: 1px solid var(--line); padding-top: 10px; }
+.prev b { font-family: var(--font-mono); }
+.msg { font-size: 13px; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); }
+.msg.err { border-color: var(--crit); color: var(--crit); }
+.msg.ok { border-color: var(--good); color: var(--good); }
+.empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+@media (prefers-reduced-motion: no-preference) { button { transition: filter .12s; } button:hover:not(:disabled) { filter: brightness(1.06); } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Desk Approvals</h1>
+    <div class="row">
+      <span class="sub" id="repoLabel"></span>
+      <button id="refresh" type="button">Refresh</button>
+      <button id="settings" type="button">Settings</button>
+    </div>
+  </header>
+
+  <section class="setup" id="setup">
+    <label>Repository (owner/name)<input id="repo" placeholder="yourname/trading-desk" autocomplete="off"></label>
+    <label>Branch<input id="branch" value="main" autocomplete="off"></label>
+    <label>GitHub token (fine-grained, Contents read and write on this repo only)<input id="token" type="password" autocomplete="off"></label>
+    <div class="note">The token stays in this browser only. Make it a fine-grained token scoped to this one repository, never a classic token with broad access.</div>
+    <div class="row"><button class="primary" id="save" type="button">Save and load</button><button id="forget" type="button">Forget token</button></div>
+  </section>
+
+  <div id="status"></div>
+
+  <div class="stats" id="stats"></div>
+
+  <h2>Waiting for you</h2>
+  <div id="pending" class="wrap" style="gap:12px"></div>
+
+  <h2>Recent decisions</h2>
+  <div id="history" class="wrap" style="gap:12px"></div>
+</div>
+
+<script>
+(function () {
+  var STAGES = ["scout", "analyst", "risk", "execution", "reviewer"];
+  var NEXT = { scout: "analyst", analyst: "risk", risk: "execution", execution: "reviewer", reviewer: null };
+  var cfg = { repo: "", branch: "main", token: "" };
+  var items = [];
+
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+  function loadCfg() {
+    cfg.repo = ls("desk.repo") || ""; cfg.branch = ls("desk.branch") || "main"; cfg.token = ls("desk.token") || "";
+    el("repo").value = cfg.repo; el("branch").value = cfg.branch; el("token").value = cfg.token;
+    el("repoLabel").textContent = cfg.repo ? cfg.repo + " @ " + cfg.branch : "";
+  }
+  function el(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function msg(text, kind) { el("status").innerHTML = text ? '<div class="msg ' + (kind || "") + '">' + esc(text) + "</div>" : ""; }
+
+  function api(path, opts) {
+    opts = opts || {};
+    var url = "https://api.github.com/repos/" + cfg.repo + "/contents/" + path;
+    if (opts.method !== "PUT") url += "?ref=" + encodeURIComponent(cfg.branch) + "&t=" + Date.now();
+    return fetch(url, {
+      method: opts.method || "GET",
+      headers: { Authorization: "Bearer " + cfg.token, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28", "Content-Type": "application/json" },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function (r) {
+      if (r.status === 404 && opts.allow404) return null;
+      if (!r.ok) return r.text().then(function (t) { throw new Error("GitHub " + r.status + ": " + t.slice(0, 200)); });
+      return r.json();
+    });
+  }
+  function b64dec(s) { return decodeURIComponent(escape(atob(s.replace(/\n/g, "")))); }
+  function b64enc(s) { return btoa(unescape(encodeURIComponent(s))); }
+
+  function load() {
+    if (!cfg.repo || !cfg.token) { el("setup").hidden = false; return; }
+    el("setup").hidden = true;
+    msg("Loading queue…");
+    api("queue", { allow404: true }).then(function (list) {
+      if (!list) { items = []; render(); msg("No queue/ folder yet. The first bot that finishes will create it.", "ok"); return; }
+      var files = list.filter(function (f) { return f.type === "file" && /\.json$/.test(f.name); });
+      return Promise.all(files.map(function (f) {
+        return api("queue/" + f.name).then(function (d) {
+          var o; try { o = JSON.parse(b64dec(d.content)); } catch (e) { o = { ticker: f.name, summary: "Could not parse this file.", status: "pending", stage: "?" }; }
+          o._path = "queue/" + f.name; o._sha = d.sha; return o;
+        });
+      })).then(function (all) { items = all; render(); msg(""); });
+    }).catch(function (e) { msg(e.message, "err"); });
+  }
+
+  function listBlock(title, arr, cls) {
+    var body = (arr && arr.length) ? "<ul>" + arr.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : '<div class="none">none</div>';
+    return '<div class="list ' + cls + '"><h3>' + title + " (" + ((arr && arr.length) || 0) + ")</h3>" + body + "</div>";
+  }
+  function verdictClass(o) {
+    var v = String(o.verdict || "").toUpperCase();
+    if (/ZERO|NO TICKET|FAIL/.test(v)) return "zero";
+    if (/APPROVED|READY|SIZE \$?[1-9]/.test(v)) return "sized";
+    return "";
+  }
+  function card(o, decided) {
+    var vc = verdictClass(o);
+    var next = o.next_stage || NEXT[o.stage] || "";
+    var h = '<article class="card ' + vc + (decided ? " decided" : "") + '" data-path="' + esc(o._path) + '">';
+    h += '<div class="card-head"><div class="ticker">' + esc(o.ticker || "?") + "<small>" + esc(o.chain || "") + "</small></div><div class=\"row\">";
+    h += '<span class="pill stage">' + esc(o.stage || "?") + " done</span>";
+    if (o.dry_run) h += '<span class="pill dry">dry run</span>';
+    if (o.verdict) h += '<span class="pill ' + vc + '">' + esc(o.verdict) + "</span>";
+    h += "</div></div>";
+    if (o.summary) h += '<p class="summary">' + esc(o.summary) + "</p>";
+    h += '<div class="lists">' + listBlock("Disqualifiers", o.disqualifiers, "crit") + listBlock("Unknowns", o.unknowns, "warn") + listBlock("Red flags", o.red_flags, "flag") + "</div>";
+    h += '<div class="kv">';
+    if (o.submitted_at) h += "<span>submitted " + esc(o.submitted_at) + "</span>";
+    if (o.contract) h += "<span>" + esc(o.contract) + "</span>";
+    if (o.brief_path) h += '<a href="https://github.com/' + esc(cfg.repo) + "/blob/" + esc(cfg.branch) + "/" + esc(o.brief_path) + '" target="_blank" rel="noopener">open brief</a>';
+    h += "</div>";
+    if (!decided) {
+      var approveLabel = o.stage === "execution" ? "Approve ticket. I will place the order." : (next ? "Approve, send to " + next : "Approve");
+      h += '<div class="decide"><textarea id="r-' + esc(o._path) + '" placeholder="Your reason (required). Reviewer grades this line, so say which finding drove the decision."></textarea>';
+      h += '<div class="row"><button type="button" class="crit" data-act="rejected">Reject</button>';
+      h += '<button type="button" class="good" data-act="approved"' + (next ? "" : " disabled") + ">" + esc(approveLabel) + "</button></div></div>";
+    } else if (o.decision) {
+      h += '<div class="prev"><b>' + esc(String(o.decision.status).toUpperCase()) + "</b> · " + esc(o.decision.at || "") + (o.status === "running" || o.status === "done" ? " · now " + esc(o.status) : "") + "<br>" + esc(o.decision.reason || "") + "</div>";
+    }
+    return h + "</article>";
+  }
+  function render() {
+    var pending = items.filter(function (o) { return o.status === "pending"; });
+    var done = items.filter(function (o) { return o.status !== "pending"; });
+    pending.sort(function (a, b) { return String(b.submitted_at || "").localeCompare(String(a.submitted_at || "")); });
+    done.sort(function (a, b) { return String((b.decision || {}).at || "").localeCompare(String((a.decision || {}).at || "")); });
+    var counts = { pending: pending.length, zero: 0, sized: 0 };
+    items.forEach(function (o) { var c = verdictClass(o); if (c) counts[c]++; });
+    el("stats").innerHTML = '<div class="stat"><b>' + counts.pending + "</b><span>waiting</span></div><div class=\"stat\"><b>" + counts.sized + "</b><span>sized</span></div><div class=\"stat\"><b>" + counts.zero + "</b><span>size zero</span></div><div class=\"stat\"><b>" + items.length + "</b><span>in queue</span></div>";
+    el("pending").innerHTML = pending.length ? pending.map(function (o) { return card(o, false); }).join("") : '<div class="empty">Nothing waiting. Tell Scout to run.</div>';
+    el("history").innerHTML = done.length ? done.map(function (o) { return card(o, true); }).join("") : '<div class="empty">No decisions yet.</div>';
+  }
+
+  function decide(path, act) {
+    var o = items.filter(function (x) { return x._path === path; })[0]; if (!o) return;
+    var reason = (el("r-" + path).value || "").trim();
+    if (!reason) { msg("Write a reason first. It goes into the brief and Reviewer grades it.", "err"); return; }
+    var now = new Date().toISOString();
+    var next = o.next_stage || NEXT[o.stage];
+    var updated = {};
+    Object.keys(o).forEach(function (k) { if (k[0] !== "_") updated[k] = o[k]; });
+    updated.status = act;
+    updated.decision = { by: "human", status: act, reason: reason, at: now };
+    updated.next_stage = act === "approved" ? next : "reviewer";
+    var btns = document.querySelectorAll('[data-path="' + path + '"] button'); for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
+    msg("Saving…");
+    api(o._path, { method: "PUT", body: { message: act.toUpperCase() + " " + (o.ticker || "") + " after " + (o.stage || "") , branch: cfg.branch, sha: o._sha, content: b64enc(JSON.stringify(updated, null, 2) + "\n") } })
+      .then(function () { return appendLog("- " + now + " | " + (o.ticker || "") + " | after " + (o.stage || "") + " | " + act.toUpperCase() + " | " + reason.replace(/\n/g, " ")); })
+      .then(function () { msg((o.ticker || "") + " " + act + ".", "ok"); load(); })
+      .catch(function (e) { msg(e.message, "err"); load(); });
+  }
+  function appendLog(line) {
+    var p = "log/decisions.md";
+    return api(p, { allow404: true }).then(function (d) {
+      var text = d ? b64dec(d.content) : "# Human decisions\n\n";
+      var body = { message: "Log decision", branch: cfg.branch, content: b64enc(text.replace(/\s*$/, "") + "\n" + line + "\n") };
+      if (d) body.sha = d.sha;
+      return api(p, { method: "PUT", body: body });
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-act]"); if (!b) return;
+    decide(b.closest("article").getAttribute("data-path"), b.getAttribute("data-act"));
+  });
+  el("save").addEventListener("click", function () {
+    cfg.repo = el("repo").value.trim(); cfg.branch = el("branch").value.trim() || "main"; cfg.token = el("token").value.trim();
+    ls("desk.repo", cfg.repo); ls("desk.branch", cfg.branch); ls("desk.token", cfg.token);
+    el("repoLabel").textContent = cfg.repo + " @ " + cfg.branch; load();
+  });
+  el("forget").addEventListener("click", function () { try { localStorage.removeItem("desk.token"); } catch (e) {} cfg.token = ""; el("token").value = ""; msg("Token removed from this browser.", "ok"); });
+  el("refresh").addEventListener("click", load);
+  el("settings").addEventListener("click", function () { el("setup").hidden = !el("setup").hidden; });
+
+  loadCfg(); load();
+})();
+</script>
+</body>
+</html>
