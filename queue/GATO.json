@@ -1,0 +1,29 @@
+{
+  "ticker": "GATO",
+  "chain": "Solana",
+  "contract": "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump",
+  "stage": "scout",
+  "status": "pending",
+  "next_stage": "analyst",
+  "dry_run": false,
+  "submitted_at": "2026-10-27T17:21:44-04:00",
+  "verdict": "pass-with-unknowns",
+  "summary": "GTA6CAT (GATO) is a pump.fun graduate on PumpSwap. Liquidity is $218k, the pair is about 63 days old, and vol/liq is 4.10x. Mint and freeze authority are revoked. Top-10 holders and LP burn are unconfirmed. Early X attention came from automated alert bots and Telegram-caller template posts, plus a paid DEX Screener boost.",
+  "disqualifiers": [],
+  "unknowns": [
+    "top-10 holder % (Solana RPC 429)",
+    "LP burn/lock status not verified on-chain",
+    "@GemChaserSOL own paid-promo status",
+    "relation of pre-launch @gta6cat to @TheGTA6cat"
+  ],
+  "red_flags": [
+    "early attention dominated by bots and TG-caller template posts",
+    "paid DEX Screener Boost 500 on 2026-08-26",
+    "identical promo copy from @CryptoAlanReal and @alterfind_",
+    "project X account 2 days old at launch",
+    "copycat GTA6CAT on Robinhood Chain",
+    "unverified X claim: top-5 clusters hold 24.18%"
+  ],
+  "brief_path": "briefs/GATO.md",
+  "decision": null
+}
