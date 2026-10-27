@@ -3,7 +3,7 @@
   "chain": "Solana",
   "contract": "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump",
   "stage": "scout",
-  "status": "pending",
+  "status": "approved",
   "next_stage": "analyst",
   "dry_run": false,
   "submitted_at": "2026-10-27T17:21:44-04:00",
@@ -25,5 +25,10 @@
     "unverified X claim: top-5 clusters hold 24.18%"
   ],
   "brief_path": "briefs/GATO.md",
-  "decision": null
+  "decision": {
+    "by": "human",
+    "status": "approved",
+    "reason": "“Approve, send to analyst.”",
+    "at": "2026-10-27T22:01:49.740Z"
+  }
 }
