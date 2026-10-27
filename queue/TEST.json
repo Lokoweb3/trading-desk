@@ -3,15 +3,24 @@
   "chain": "Robinhood Chain",
   "contract": "0x0000000000000000000000000000000000000000",
   "stage": "risk",
-  "status": "pending",
-  "next_stage": "execution",
+  "status": "rejected",
+  "next_stage": "reviewer",
   "dry_run": true,
   "submitted_at": "2026-10-27T20:00:00Z",
   "verdict": "SIZE ZERO",
   "summary": "Hand-written test card. Approve or reject it with a reason, then confirm the file and log/decisions.md changed.",
-  "disqualifiers": ["Example disqualifier"],
-  "unknowns": ["Example unknown"],
+  "disqualifiers": [
+    "Example disqualifier"
+  ],
+  "unknowns": [
+    "Example unknown"
+  ],
   "red_flags": [],
   "brief_path": "briefs/TEST.md",
-  "decision": null
+  "decision": {
+    "by": "human",
+    "status": "rejected",
+    "reason": "test card",
+    "at": "2026-10-27T21:11:27.798Z"
+  }
 }
