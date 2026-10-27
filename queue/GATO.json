@@ -2,13 +2,13 @@
   "ticker": "GATO",
   "chain": "Solana",
   "contract": "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump",
-  "stage": "analyst",
-  "status": "approved",
-  "next_stage": "risk",
+  "stage": "risk",
+  "status": "pending",
+  "next_stage": "execution",
   "dry_run": false,
   "submitted_at": "2026-10-27T17:21:44-04:00",
-  "verdict": "pass-with-unknowns",
-  "summary": "Helius rerun: mint/freeze revoked, no tax/hook, PumpSwap LP mint supply 0 (burned). Top-10 ex-LP 17.03%, largest wallet 3.32% is the coin_creator. $50 impact ~0.047% each way. Bot-template promotion confirmed.",
+  "verdict": "SIZE ZERO",
+  "summary": "Risk: SIZE ZERO. 6 unknowns exceed the 3-unknown limit; no disqualifiers. Real account size not provided. 8 invalidation conditions on file in briefs/GATO.md.",
   "disqualifiers": [],
   "unknowns": [
     "Pool fee %",
@@ -32,5 +32,12 @@
     "status": "approved",
     "reason": "proceed",
     "at": "2026-10-27T23:35:30.373Z"
+  },
+  "risk": {
+    "position_size_usd": 0,
+    "dollar_risk_at_stop": 0,
+    "account_size": null,
+    "unknowns_counted": 6,
+    "at": "2026-10-27T19:52:00-04:00"
   }
 }

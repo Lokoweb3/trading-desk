@@ -47,3 +47,26 @@ Unknowns: (1) Pool fee % — reading PumpSwap global/fee config account would re
 Disqualifiers: none
 
 Analysis complete. Awaiting approval before Risk starts.
+
+RISK – Oct 27, 2026 7:52 PM ET
+Account: NOT PROVIDED (live card, dry_run false; the real account size has not been given, so no dollar figure can be sized. The verdict below does not depend on it.)
+Position size: $0 (0% of account)
+Dollar risk at stop: $0
+Unknowns counted: 6  Disqualifiers: 0
+Size reductions applied:
+- The count of 6 unknowns (pool fee %, exchange labels for top holders, largest wallet 30-day behavior and creator-linked round-lot holders, BloFin listing claim, common operator behind the template accounts, @GemChaserSOL track record) is above the 3-unknown limit. Size set to 0 on this rule alone.
+- For reference only: 1 unknown touches liquidity (pool fee %), which would halve the max position from 5% to 2.5% of account before the zero rule applies.
+- Analyst tested $50, which is above the $0 allowed. With no account size on file, no non-zero size could have been checked against that test.
+Invalidation conditions (kept on file in case the unknowns clear on a re-run):
+1. PumpSwap pair 5E3dXLXGwmTDCokA51WYYaKttjFZBwqCoyUHBUi5gt2m liquidity drops below $150,000 on DEX Screener (about 30% under Analyst's $213,881 reading).
+2. Any LP tokens appear for LP mint HYCkjQGv… (supply rises above 0), or a single liquidity removal larger than $25,000 hits the PumpSwap pair.
+3. Creator-linked wallet 5MVneCfDge5vtf4C7QZmczCJbBB8vfvDbMqvopvkBLJm (3.32%) sends any GATO to the pool or an exchange.
+4. Either 25,000,000-GATO round-lot holder (owners 2t5Hh…, 8gHMH…) or either 10,000,000-GATO holder (#9, #10) moves more than half its balance in 24h.
+5. Any top-10 wallet, excluding the pool vault, sells more than 25% of its holdings in 24h, or top-10 ex-LP rises above 25% (from 17.03%).
+6. A 1-hour candle closes below $0.0035 on the PumpSwap pair (about 25% under the ~$0.00466 implied by Analyst's reserves of 1,051.909 SOL / 22,938,183 GATO at $213,881 liq).
+7. @TheGTA6cat or @GemChaserSOL is suspended or deleted, or the 2026-08-25 08:28:17 ET origin alert is deleted.
+8. Mint or freeze authority, or a transfer-fee or transfer-hook extension, appears on the Token-2022 mint.
+Correlation check: no open positions. PONS and CASHCAT were SIZE ZERO dry runs with no exposure. GATO's origin is @GemChaserSOL, which matches no other brief, so there's no same-origin overlap. Chain concentration: 0% on Solana.
+Verdict: SIZE ZERO
+
+Risk complete. Awaiting approval before Execution starts.
