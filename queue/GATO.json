@@ -3,7 +3,7 @@
   "chain": "Solana",
   "contract": "HsprHxBRgiVaQdRf3TnKNuZZtaX9JUSPgMFdAkk6pump",
   "stage": "analyst",
-  "status": "pending",
+  "status": "approved",
   "next_stage": "risk",
   "dry_run": false,
   "submitted_at": "2026-10-27T17:21:44-04:00",
@@ -30,7 +30,7 @@
   "decision": {
     "by": "human",
     "status": "approved",
-    "reason": "\u201cApprove, send to analyst.\u201d",
-    "at": "2026-10-27T22:01:49.740Z"
+    "reason": "proceed",
+    "at": "2026-10-27T23:35:30.373Z"
   }
 }
