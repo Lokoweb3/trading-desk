@@ -197,13 +197,16 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: v
     h += '<div class="kv">';
     if (o.submitted_at) h += "<span>submitted " + esc(o.submitted_at) + "</span>";
     if (o.contract) h += "<span>" + esc(o.contract) + "</span>";
+    h += "<span>price_at_decision " + (o.price_at_decision != null ? "$" + esc(o.price_at_decision) : "\u2014") + "</span>";
+    h += "<span>tracked " + esc(o.tracked === true ? "true" : o.tracked === false ? "false" : "\u2014") + "</span>";
     if (o.brief_path) h += '<a href="https://github.com/' + esc(cfg.repo) + "/blob/" + esc(cfg.branch) + "/" + esc(o.brief_path) + '" target="_blank" rel="noopener">open brief</a>';
     h += "</div>";
-    if (!decided) {
+    var promptEdit = /^PROMPT EDIT/i.test(String(o.verdict || ""));
+    if (!decided || (promptEdit && !o.decision)) {
       var approveLabel = o.stage === "execution" ? "Approve ticket. I will place the order." : (next ? "Approve, send to " + next : "Approve");
       h += '<div class="decide"><textarea id="r-' + esc(o._path) + '" placeholder="Your reason (required). Reviewer grades this line, so say which finding drove the decision."></textarea>';
       h += '<div class="row"><button type="button" class="crit" data-act="rejected">Reject</button>';
-      h += '<button type="button" class="good" data-act="approved"' + (next ? "" : " disabled") + ">" + esc(approveLabel) + "</button></div></div>";
+      h += '<button type="button" class="good" data-act="approved"' + (next || promptEdit ? "" : " disabled") + ">" + esc(approveLabel) + "</button></div></div>";
     } else if (o.decision) {
       h += '<div class="prev"><b>' + esc(String(o.decision.status).toUpperCase()) + "</b> · " + esc(o.decision.at || "") + (o.status === "running" || o.status === "done" ? " · now " + esc(o.status) : "") + "<br>" + esc(o.decision.reason || "") + "</div>";
     }
