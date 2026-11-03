@@ -109,3 +109,27 @@ Reference price at no-order decision: $0.09620 (DEX Screener, main pair 0xA70f�
 
 HUMAN DECISION – Oct 27, 2026 4:42 PM ET
 REJECTED, dry run. Failed holder concentration and vol/liq; insider buys before origin post; liquidity withdrawable on 9 of 11 pairs; origin caller's prior calls collapsed.
+
+REVIEW – CASHCAT – Oct 28, 2026 5:50 AM ET (24h after no-order decision)
+Decision: REJECTED by the human (dry run, Oct 27 4:42 PM ET) after Risk sized $0 / no order (2 disqualifiers, 9 unknowns). No position was opened.
+Result: Actual P&L $0.00 (0% of $1,000 paper account), no fees or gas paid. Price path on main pair 0xA70f…E313: reference $0.09620 (Oct 27 5:31 AM ET) → $0.1033 now (DEX Screener, +7.4%). 24h low $0.09232 (Oct 27 6 AM hour, −4.0%), 24h high $0.10752 (Oct 28 1 AM hour, +11.8%) from GeckoTerminal hourly candles (DEX Screener has no candle API, so its h24 change of +7.63% was cross-checked against them). Hypothetical: Analyst's tested $50 held for 24h would be ≈ +$3.69 gross, ≈ +$2.65 after the 1% pool fee each way (≈ +0.27% of account), gas not known.
+Exit type: N/A (no position). The hypothetical was marked at the 24h point because Execution set no stop, target or time stop.
+Invalidation check (Risk's 7 conditions, Oct 27 5:31 AM to Oct 28 5:45 AM ET):
+1. Main pair liq below $1.5M: NOT TRIGGERED. $1.93M → $2.01M (both ends of the window; no intraday liquidity series available).
+2. All-pairs liq below $4.0M: NOT TRIGGERED. $4.98M → $5.20M across 30 pairs.
+3. 0x841e…3a34 or 0x1a18…a4e7 sends more than 10M CASHCAT out in 24h: NOT TRIGGERED. 0x841e sent 6.97M out (5.0M of it to 0x1887…3cdd, 1.55M to 0x040d…0f3f) and took 0.49M in; 0x1a18 sent 0.53M out. 0x841e went from 17.83% to 17.18% of supply, but 0x1a18 rose 2.11% → 2.60% and 0x1887 rose 0.62% → 1.12%, so the linked three-wallet group grew from ≈20.6% to ≈20.9%.
+4. Any top-10 wallet sells more than 25% of holdings in 24h: AMBIGUOUS. 0x0d07…92fe moved 6.44M out (51% of its starting balance) but took 6.19M back in, so its net change was −2%. This looks like a high-turnover trading wallet, not a holder exiting. No other top-10 wallet moved more than 5% out.
+5. Single LP removal above $250k: NOT TRIGGERED on the 5 Uniswap v3/Ramses/Up pools checked (largest single Burn ≈ $47k on 0x4B0c…D0E1, valued at current prices). The Up pool 0x4E86…917b hit the 1,000-row log cap with heavy add/remove churn. Uniswap v4 pools (in PoolManager) were NOT checked.
+6. @Bend756 deletes the origin post: NOT TRIGGERED. Post 2067714936474849709 is still live; account active (806 followers).
+7. Robinhood or Vlad Tenev disowns the token: NOT TRIGGERED. No posts from @vladtenev or Robinhood accounts mentioning Cash Cat since Oct 27 5:31 AM ET.
+Human rejection reasons, graded:
+- "Failed holder concentration and vol/liq": CORRECT, still true. Top-10 now 37.0% ex-burn/LP (limit 30%). Vol/liq is 0.21x on the main pair ($416.9k / $2.01M) and 1.53x all pairs ($7.97M / $5.20M), both still under 2x. Note: $4.50M of the all-pairs volume came from one $1.50M pool (0xd42A…2b09), which is 3x its liquidity in a day.
+- "Insider buys before origin post": SUPPORTED by the brief (2 wallets bought 1.04% and 0.48% 35–51s before the Jun 18 post). Both wallets already exited, so this was a valid trust signal but had no bearing on the next 24h.
+- "Liquidity withdrawable on 9 of 11 pairs": SUPPORTED by the brief. It didn't materialize: total liquidity rose and no large single pull was seen on the pools checked. The risk was real; it just didn't happen in this window.
+- "Origin caller's prior calls collapsed": OVERSTATED. The brief shows 1 traced collapse ($birdie, 60k → $6k), 1 likely collapse with an unknown outcome ($banger), 18 untraced calls, and this same caller's CASHCAT call going from 22.5k to ~$95M. The accurate wording is "2 of ~20 traced calls failed, most outcomes unknown."
+Was the rejection still correct? YES. Both hard disqualifiers still hold today, and 9 unknowns is still 3x the limit. A +7.4% move inside a −4.0% / +11.8% band is ordinary drift for this token, not evidence the screen was wrong.
+Classification: RIGHT REASON / WRONG OUTCOME (the rule-based rejection was right, and the token rose modestly anyway; a skipped +2.65 net on $50 is the cost of the rules, not a process failure). One of the four stated reasons was overstated, which is a minor process note, not a failure.
+Narrative: UNCLEAR, unchanged. "Robinhood's original name was Cash Cat, so this is Robinhood Chain's cat meme" got no new support and no contradiction in 24h: no affiliation and no disowning. The price rose on thin main-pair volume with buys (890) outnumbering sells (764).
+Unknowns that mattered: None turned into a loss. The ones that came closest are (1) control of the linked 0x841e / 0x1a18 / 0x1887 wallets, now ≈20.9% combined and still growing, and (2) the LP status of the v4 pools, which still couldn't be checked.
+Suggested rule change (for the human to apply; not edited): RISK, measure invalidation #4 on net balance change (out minus in) rather than gross outflow, so a high-turnover wallet doesn't trip it. SCOUT/ANALYST, report top-10 concentration with linked-wallet clusters combined. HUMAN DECISION lines, state caller track records as traced counts ("2 of 20 failed, 18 unknown") rather than "collapsed."
+Sources: DEX Screener API (pair + token endpoints), GeckoTerminal hourly OHLCV, Blockscout API (chain 4663: holders, tokentx, Burn logs, blocks 99,140,628–99,979,696), X public reads.

@@ -1,0 +1,1 @@
+- [2026-11-03 02:07 EST] DATA FAILED: all 115 log/rejected.md lines (dated 2026-10-27) — no contract address recorded, so DEX Screener lookup would require guessing by ticker; skipped. Contract UNKNOWN.
